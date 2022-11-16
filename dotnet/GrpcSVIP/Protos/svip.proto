@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcSVIP";
+
+package svip;
+
+service SVIP {
+  rpc ProcessProject (SvipRequest) returns (ModelReply);
+}
+
+message ModelReply {
+  string message = 1;
+}
+
+message SvipRequest {
+  string Version = 1;
+  repeated SongTempo SongTempoList = 2;
+  repeated TimeSignature TimeSignatureList = 3;
+  repeated Track TrackList = 4;
+}
+
+message SongTempo {
+	uint32 Position = 1;
+	double BPM = 2;
+}
+
+message TimeSignature {
+	uint32 BarIndex = 1;
+	uint32 Numerator = 2;
+	uint32 Denominator = 3;
+}
+
+message Track {
+	string Type = 1;
+	string Title = 2;
+	bool Mute = 3;
+	bool Solo = 4;
+	double Volume = 5;
+	double Pan = 6;
+	string AISingerName = 7;
+	string ReverbPreset = 8;
+	repeated Note NoteList = 9;
+	Params EditedParams = 10;
+	string AudioFilePath = 11;
+	int32 Offset = 12;
+}
+
+message Note {
+	uint64 StartPos = 1;
+	uint32 Length = 2;
+	uint32 KeyNumber = 3;
+	string HeadTag = 4;
+	string Lyric = 5;
+	string Pronunciation = 6;
+	// Phones EditedPhones = 7;
+	// Vibrato Vibrato = 8;
+}
+
+message Phones {
+	double HeadLengthInSecs = 1;
+	double MidRatioOverTail = 2;
+}
+
+message Vibrato {
+    double StartPercent = 1;
+    double EndPercent = 2;
+    bool IsAntiPhase = 3;
+    ParamCurve Amplitude = 4;
+    ParamCurve Frequency = 5;
+}
+
+message Params {
+	ParamCurve Pitch = 1;
+	ParamCurve Volume = 2;
+	ParamCurve Breath = 3;
+	ParamCurve Gender = 4;
+	ParamCurve Strength = 5;
+}
+
+message ParamCurve {
+	uint32 TotalPointsCount = 1;
+	repeated Point PointList = 2;
+}
+
+message Point {
+	int64 X = 1;
+	int64 Y = 2;
+}
